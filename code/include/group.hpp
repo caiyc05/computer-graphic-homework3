@@ -38,6 +38,14 @@ public:
         return intersect;
     }
 
+    void drawGL() override {
+        for (auto *object : objects) {
+            if (object != nullptr) {
+                object->drawGL();
+            }
+        }
+    }
+
     void addObject(int index, Object3D *obj) {
         if(index >= 0 && index<objects.size()){
             objects.insert(objects.begin()+index,obj);
