@@ -19,26 +19,40 @@ public:
     }
 
     explicit Group (int num_objects) {
-
+        objects.reserve(num_objects);
     }
 
     ~Group() override {
-
+        for(Object3D* object:objects){
+            delete object;
+        }
     }
 
     bool intersect(const Ray &r, Hit &h, float tmin) override {
-
+        bool intersect = false;
+        for(auto& object:objects){
+            if(object->intersect(r,h,tmin)){
+                intersect = true;
+            }
+        }
+        return intersect;
     }
 
     void addObject(int index, Object3D *obj) {
-
+        if(index >= 0 && index<objects.size()){
+            objects.insert(objects.begin()+index,obj);
+        }
+        else{
+            objects.push_back(obj);
+        }
     }
 
     int getGroupSize() {
-
-    }
+        return objects.size();
+    }   
 
 private:
+    std::vector<Object3D*> objects;
 
 };
 

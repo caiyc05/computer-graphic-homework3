@@ -10,17 +10,39 @@
 class Plane : public Object3D {
 public:
     Plane() {
-
+        norm = Vector3f(0,0,1);
+        d = 0;
+        material = nullptr;
     }
 
-    Plane(const Vector3f &normal, float d, Material *m) : Object3D(m) {
+    Plane(const Vector3f &normal, float d, Material *m) :
+    Object3D(m),norm(normal),d(d) {
 
     }
 
     ~Plane() override = default;
 
-    bool intersect(const Ray &r, Hit &h, float tmin) override {
-        return false;
+     bool intersect(const Ray &r, Hit &h, float tmin) override {
+        Vector3f dir = r.getDirection();
+        Vector3f origin = r.getOrigin();
+        
+        if(fabs(Vector3f::dot(dir,norm)) < 1e-6){
+            return false;
+        }
+
+        float t = (d - Vector3f::dot(norm,origin)) / Vector3f::dot(dir,norm);
+
+        if(tmin > t || t < 0){
+            return false;
+        }
+
+        if(h.getT() <= t){
+            return false;
+        }
+        
+        h.set(t, material, norm);
+        
+        return true;
     }
 
     void drawGL() override {
