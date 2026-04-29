@@ -79,7 +79,7 @@ public:
             const Vector3f& p3 = controls[3*i+3];
 
             //进行resolution次采样
-            for(int j=0;j<resolution;j++){
+            for(int j=0;j<=resolution;j++){
                 //不放认为每次采样的t均匀分布
                 float t = static_cast<float>(j) / resolution;
                 
@@ -140,7 +140,8 @@ public:
             //计算B_{i-k,k}(t),.....B_{i,k}(t)即可
             float start = t_list[i];
             float end = t_list[i+1];
-            for(int j=0;j<resolution;j++){
+            for(int j=0;j<=resolution;j++){
+                if(end - start < 1e-6f) continue;
                 float t = start + (end-start) / resolution*j;
 
                 float* b_basis = new float[n+k+1];
