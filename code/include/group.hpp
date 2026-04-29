@@ -37,7 +37,7 @@ public:
         }
         return intersect;
     }
-
+    //compare with pa1, add the drawgl function to draw the scene
     void drawGL() override {
         for (auto *object : objects) {
             if (object != nullptr) {
